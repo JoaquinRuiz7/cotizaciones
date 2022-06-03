@@ -1,21 +1,17 @@
 <?php
 
-use Spatie\ArrayToXml\ArrayToXml;
+namespace cotizaciones\domain;
 
-class CurrencyQuotation
+use Spatie\ArrayToXml\ArrayToXml;
+use stdClass;
+
+class CurrencyQuotation extends BcuClient
 {
 
-    const BCU_WSDL = 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcucotizaciones?wsdl';
     const BCU_LOCATION = 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcucotizaciones';
     const BCU_ACTION = 'Cotizaaction/AWSBCUCOTIZACIONES.Execute';
-    public SoapClient $client;
 
-    public function __construct()
-    {
-        $this->client = new SoapClient(self::BCU_WSDL);
-    }
-
-    public function getAsXml(array $currency, string $date)
+    public function getAsXml(array $currency, string $date): string
     {
 
         $soapEnv = [
@@ -37,7 +33,7 @@ class CurrencyQuotation
         return $this->client->__doRequest($xml, self::BCU_LOCATION, self::BCU_ACTION, '1.0');
     }
 
-    public function get(array $currency, string $date)
+    public function get(array $currency, string $date): StdClass
     {
         $requestBody = [
             'Entrada' => [
@@ -52,14 +48,8 @@ class CurrencyQuotation
 
     }
 
-    private function envelopeHeader()
+    protected function getWSDL(): string
     {
-        return [
-            'rootElementName' => 'soapenv:Envelope',
-            '_attributes' => [
-                'xmlns:soapenv' => 'http://schemas.xmlsoap.org/soap/envelope/',
-                'xmlns' => 'Cotiza',
-            ]
-        ];
+        return 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcucotizaciones?wsdl';
     }
 }

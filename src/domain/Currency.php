@@ -1,20 +1,16 @@
 <?php
 
-use Spatie\ArrayToXml\ArrayToXml;
+namespace cotizaciones\domain;
 
-class Currency
+use Spatie\ArrayToXml\ArrayToXml;
+use stdClass;
+
+class Currency extends BcuClient
 {
-    const WSDL = 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcumonedas?wsdl';
     const BCU_LOCATION = 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcumonedas';
     const BCU_ACTION = 'Cotizaaction/AWSBCUMONEDAS.Execute';
-    public SoapClient $client;
 
-    public function __construct()
-    {
-        $this->client = new SoapClient(self::WSDL);
-    }
-
-    public function get()
+    public function get(): StdClass
     {
         $requestBody = [
             'Entrada' => [
@@ -25,7 +21,7 @@ class Currency
         return $this->client->Execute($requestBody);
     }
 
-    public function getAsXml()
+    public function getAsXml(): string
     {
 
         $soapEnv = [
@@ -44,14 +40,9 @@ class Currency
         return $this->client->__doRequest($request, self::BCU_LOCATION, self::BCU_ACTION, '1.0');
     }
 
-    private function envelopeHeader()
+
+    protected function getWSDL(): string
     {
-        return [
-            'rootElementName' => 'soapenv:Envelope',
-            '_attributes' => [
-                'xmlns:soapenv' => 'http://schemas.xmlsoap.org/soap/envelope/',
-                'xmlns' => 'Cotiza',
-            ]
-        ];
+        return 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcumonedas?wsdl';
     }
 }
