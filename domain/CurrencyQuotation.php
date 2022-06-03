@@ -8,7 +8,7 @@ class CurrencyQuotation
     const BCU_WSDL = 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcucotizaciones?wsdl';
     const BCU_LOCATION = 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcucotizaciones';
     const BCU_ACTION = 'Cotizaaction/AWSBCUCOTIZACIONES.Execute';
-    public $client;
+    public SoapClient $client;
 
     public function __construct()
     {
@@ -49,6 +49,7 @@ class CurrencyQuotation
         ];
 
         return $this->client->Execute($requestBody);
+
     }
 
     private function envelopeHeader()
