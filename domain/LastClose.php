@@ -12,8 +12,6 @@ class LastClose
 
     public function get()
     {
-        $response = $this->client->Execute();
-        print_r($response);
-        die();
+        return $this->client->Execute();
     }
 }
