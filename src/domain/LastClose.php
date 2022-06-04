@@ -22,7 +22,6 @@ class LastClose extends BcuClient
             'soapenv:Header' => '',
             'soapenv:Body' => [
                 "wsultimocierre.Execute" => [
-
                 ],
             ],
         ];

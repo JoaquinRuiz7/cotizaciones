@@ -1,6 +1,7 @@
 {
   "require": {
-    "spatie/array-to-xml": "^2.16"
+    "spatie/array-to-xml": "^2.16",
+    "ext-soap": "*"
   },
   "autoload": {
     "psr-4": {
